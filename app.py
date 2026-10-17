@@ -124,16 +124,7 @@ with st.sidebar:
     st.markdown("### 🔑 Gemini API key")
     user_key = st.text_input("Optional if set as a Space secret", type="password",
                              placeholder="GEMINI_API_KEY", label_visibility="collapsed")
-    st.divider()
-    st.markdown("### 📄 Research & Economics")
-    st.markdown(
-        """
-        - **Training Budget:** < $0.20 USD (T4 GPU)
-        - **Best Val Loss:** 1.468 (Dropout 0.2)
-        - **Model:** fine-tuned Shakespearean nanoGPT
-        """
-    )
-    st.markdown("[📖 Read 4-Page Research Paper](https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO)")
+    
     api_key = resolve_api_key(user_key)
     st.caption("✅ Key available" if api_key else "No key: the chatbot tab will be read-only.")
 
