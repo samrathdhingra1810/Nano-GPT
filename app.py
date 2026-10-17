@@ -34,9 +34,9 @@ st.markdown(
     """
 <style>
 :root { --ink:#0b1220; --ink2:#475569; --line:#e2e8f0; --blue:#2a78d6; --orange:#eb6834; --card:#f8fafc; }
-.block-container { padding-top: 1.6rem; max-width: 1280px; }
+.block-container { padding-top: 2.5rem; max-width: 1280px; }
 h1, h2, h3 { color: var(--ink); letter-spacing: -0.01em; }
-.hero-title { font-size: 2.05rem; font-weight: 750; line-height: 1.15; margin: 0 0 .35rem 0; color: var(--ink); }
+.hero-title { font-size: 2.05rem; font-weight: 750; line-height: 1.35; margin: 0 0 .35rem 0; color: var(--ink); }
 .hero-sub { color: var(--ink2); font-size: 1.02rem; margin-bottom: .2rem; }
 .pill { display:inline-block; padding:.12rem .55rem; border-radius:999px; font-size:.78rem; font-weight:600;
         border:1px solid var(--line); background:#fff; color:var(--ink2); margin-right:.35rem; }
