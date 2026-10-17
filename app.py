@@ -127,12 +127,12 @@ with st.sidebar:
     api_key = resolve_api_key(user_key)
     st.caption("✅ Key available" if api_key else "No key: the chatbot tab will be read-only.")
 
-    st.divider()
-st.markdown("### 📎 Research Assistant Context")
-uploaded_file = st.file_uploader(
-    "Upload a loss curve chart or code snippet (PNG/JPG/PDF)",
-    type=["png", "jpg", "jpeg", "pdf"],
-)
+        st.divider()
+    st.markdown("### 📎 Research Assistant Context")
+    uploaded_file = st.file_uploader(
+        "Upload a loss curve chart or code snippet (PNG/JPG/PDF)",
+        type=["png", "jpg", "jpeg", "pdf"],
+    )
 
     st.divider()
     st.markdown("### 📦 Model status")
