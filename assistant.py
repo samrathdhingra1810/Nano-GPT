@@ -6,7 +6,7 @@ from typing import Iterator, List, Optional
 
 from research import paper_context
 
-MODEL_ID = "gemini-2.5-flash"
+MODEL_ID = "gemini-3.8-flash"
 
 SUGGESTED_QUESTIONS = [
     "Why does removing dropout cause the generalization gap to jump to 2.02?",
