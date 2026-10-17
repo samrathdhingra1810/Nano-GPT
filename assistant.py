@@ -53,50 +53,45 @@ class AssistantError(RuntimeError):
     pass
 
 
-def stream_reply(
-    api_key: str, history: List[dict], uploaded_file=None
-) -> Iterator[str]:
-  """history: [{"role": "user"|"assistant", "content": str}, ...], ending with the
+def stream_reply(api_key: str, history: List[dict]) -> Iterator[str]:
+    """
+    history: [{"role": "user"|"assistant", "content": str}, ...], ending with the
+    latest user turn. Yields text chunks as they arrive.
+    """
+    try:
+        from google import genai
+        from google.genai import types
+    except ImportError as e:
+        raise AssistantError("The `google-genai` package is not installed.") from e
 
-  latest user turn. Yields text chunks as they arrive.
-  """
-  try:
-    from google import genai
-    from google.genai import types
-  except ImportError as e:
-    raise AssistantError("The `google-genai` package is not installed.") from e
-
-  try:
-    client = genai.Client(api_key=api_key)
-    contents = []
-
-    if uploaded_file is not None:
-      file_bytes = uploaded_file.getvalue()
-      mime_type = uploaded_file.type
-      contents.append(
-          types.Part.from_bytes(data=file_bytes, mime_type=mime_type)
-      )
-
-    for m in history:
-      contents.append(
-          types.Content(
-              role="model" if m["role"] == "assistant" else "user",
-              parts=[types.Part.from_text(text=m["content"])],
-          )
-      )
-
-    stream = client.models.generate_content_stream(
-        model=MODEL_ID,
-        contents=contents,
-        config=types.GenerateContentConfig(
-            system_instruction=SYSTEM_PROMPT,
-            temperature=0.3,
-            max_output_tokens=1200,
-        ),
-    )
-    for chunk in stream:
-      if chunk.text:
-        yield chunk.text
+    try:
+        client = genai.Client(api_key=api_key)
+        contents = [
+            types.Content(
+                role="model" if m["role"] == "assistant" else "user",
+                parts=[types.Part(text=m["content"])],
+            )
+            for m in history
+        ]
+        stream = client.models.generate_content_stream(
+            model=MODEL_ID,
+            contents=contents,
+            config=types.GenerateContentConfig(
+                system_instruction=SYSTEM_PROMPT,
+                temperature=0.3,
+                max_output_tokens=1200,
+            ),
+        )
+        for chunk in stream:
+            if chunk.text:
+                yield chunk.text
+    except Exception as e:
+        msg = str(e)
+        if "API key" in msg or "API_KEY" in msg or "401" in msg or "403" in msg:
+            raise AssistantError("The Gemini API rejected the key. Check that it is valid.") from e
+        if "429" in msg or "RESOURCE_EXHAUSTED" in msg:
+            raise AssistantError("Gemini rate limit reached. Wait a minute and try again.") from e
+        raise AssistantError(f"Gemini request failed: {msg[:300]}") from e
     except Exception as e:
         msg = str(e)
         if "API key" in msg or "API_KEY" in msg or "401" in msg or "403" in msg:
