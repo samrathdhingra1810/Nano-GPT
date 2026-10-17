@@ -1,0 +1,10 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.2
+streamlit==1.50.0
+plotly>=5.20
+pandas>=2.0
+numpy>=1.26
+google-genai>=1.0
+huggingface_hub>=0.23
+gTTS>=2.5
+pypdfium2>=4.30
